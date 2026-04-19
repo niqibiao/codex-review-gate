@@ -1,0 +1,10 @@
+{
+  "name": "codex-review-gate",
+  "version": "0.1.0",
+  "description": "Enforces independent Codex review of plan designs and code changes before they land. Blocks ExitPlanMode and git commit until the codex:codex-rescue subagent has reviewed the current plan/staged-diff; uses SHA fingerprints so any post-review change requires a fresh review.",
+  "author": {
+    "name": "niqibiao",
+    "email": "niqibiao@duck.com"
+  },
+  "keywords": ["review", "codex", "hook", "workflow", "quality-gate"]
+}

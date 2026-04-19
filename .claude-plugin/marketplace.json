@@ -1,0 +1,16 @@
+{
+  "name": "codex-review-gate",
+  "version": "0.1.0",
+  "description": "Claude Code plugin — forces codex:codex-rescue review before ExitPlanMode and git commit.",
+  "owner": {
+    "name": "niqibiao",
+    "email": "niqibiao@duck.com"
+  },
+  "plugins": [
+    {
+      "name": "codex-review-gate",
+      "source": "./",
+      "description": "Hook-driven quality gate: blocks ExitPlanMode and large git commits until the codex:codex-rescue subagent has reviewed the current plan/staged-diff. Review markers are SHA fingerprints — any post-review change invalidates approval."
+    }
+  ]
+}
