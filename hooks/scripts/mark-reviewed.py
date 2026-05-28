@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
-"""PostToolUse(Agent) hook: when a codex:codex-rescue subagent completes, promote the pending hash to the reviewed marker."""
+"""PostToolUse(Agent) hook: promote the pending entry referenced by the
+``[review-target: <kind>:<sha>]`` marker in the completing codex:codex-rescue
+agent's prompt. No marker → no promotion (fails safe).
+"""
 from __future__ import annotations
 
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from _state import load_state, now_iso, read_hook_input, save_state  # noqa: E402
+from _state import (  # noqa: E402
+    load_state,
+    now_iso,
+    read_hook_input,
+    remove_pending,
+    resolve_pending_from_prompt,
+    save_state,
+)
 
 
 def main() -> int:
@@ -19,25 +29,35 @@ def main() -> int:
         return 0
 
     state = load_state()
-    pending = state.get("pending_review")
-    pending_hash = state.get("pending_hash")
-    if not pending or not pending_hash:
+    if not (state.get("pending") or []):
         return 0
 
-    if pending == "plan":
-        state["plan_reviewed_hash"] = pending_hash
-    elif pending == "code":
-        state["code_reviewed_sha"] = pending_hash
+    match = resolve_pending_from_prompt(state, ti.get("prompt") or "")
+    if match is None:
+        print(
+            "[codex-review-gate] codex:codex-rescue completed but no "
+            "[review-target: plan|code|spec:<sha>] marker matched a pending review. "
+            "No review marker recorded. Re-invoke the agent with the marker "
+            "shown in the block message."
+        )
+        return 0
+
+    kind, full_hash = match
+    if kind == "plan":
+        state["plan_reviewed_hash"] = full_hash
+    elif kind == "code":
+        state["code_reviewed_sha"] = full_hash
+    elif kind == "spec":
+        state["spec_reviewed_hash"] = full_hash
     else:
         return 0
 
-    state["pending_review"] = None
-    state["pending_hash"] = None
+    remove_pending(state, kind, full_hash)
     state["last_review_ts"] = now_iso()
     save_state(state)
 
     print(
-        f"[codex-review-gate] recorded {pending} review marker ({pending_hash[:12]})"
+        f"[codex-review-gate] recorded {kind} review marker ({full_hash[:12]})"
     )
     return 0
 

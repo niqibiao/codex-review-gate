@@ -2,5 +2,7 @@
   "code_line_threshold": 80,
   "code_file_threshold": 4,
   "ignore_patterns": ["docs/", "tests/", "test/", "*.md", "*.lock"],
+  "spec_path_patterns": ["docs/superpowers/specs/", "docs/specs/", "docs/design/"],
+  "plan_path_patterns": ["docs/superpowers/plans/", "docs/plans/"],
   "review_ttl_seconds": 1800
 }

@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 .DS_Store
+
+# Plugin runtime state when this repo dogfoods itself
+.claude/codex-review-state.json
+.claude/codex-review.local.json

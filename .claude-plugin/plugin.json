@@ -1,7 +1,7 @@
 {
   "name": "codex-review-gate",
-  "version": "0.1.0",
-  "description": "Enforces independent Codex review of plan designs and code changes before they land. Blocks ExitPlanMode and git commit until the codex:codex-rescue subagent has reviewed the current plan/staged-diff; uses SHA fingerprints so any post-review change requires a fresh review.",
+  "version": "0.4.0",
+  "description": "Enforces independent Codex review of design specs, plan documents, and code changes before they land. Blocks ExitPlanMode, Write-to-spec-path (for skills that persist designs directly, e.g. superpowers:brainstorming), Write-to-plan-path (e.g. superpowers:writing-plans), and git commit until the codex:codex-rescue subagent has reviewed the current artifact; uses SHA fingerprints per pending artifact (matched via a [review-target:] marker in the agent prompt) so concurrent blocks cannot clobber each other and any post-review change requires a fresh review.",
   "author": {
     "name": "niqibiao",
     "email": "niqibiao@duck.com"

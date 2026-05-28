@@ -1,7 +1,7 @@
 {
   "name": "codex-review-gate",
-  "version": "0.1.0",
-  "description": "Claude Code plugin — forces codex:codex-rescue review before ExitPlanMode and git commit.",
+  "version": "0.4.0",
+  "description": "Claude Code plugin — forces codex:codex-rescue review before design/spec finalization (Write-to-spec-path), plan finalization (ExitPlanMode or Write-to-plan-path), and git commit.",
   "owner": {
     "name": "niqibiao",
     "email": "niqibiao@duck.com"
@@ -10,7 +10,7 @@
     {
       "name": "codex-review-gate",
       "source": "./",
-      "description": "Hook-driven quality gate: blocks ExitPlanMode and large git commits until the codex:codex-rescue subagent has reviewed the current plan/staged-diff. Review markers are SHA fingerprints — any post-review change invalidates approval."
+      "description": "Hook-driven quality gate: blocks ExitPlanMode, Write-to-spec-path, Write-to-plan-path, and large git commits until the codex:codex-rescue subagent has reviewed the current artifact. Review markers are SHA fingerprints per pending artifact, matched via a [review-target:] marker in the agent prompt — any post-review change invalidates approval."
     }
   ]
 }
